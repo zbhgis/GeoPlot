@@ -1,15 +1,15 @@
-# GeoPlot 
+# GeoPlot
 
-[English](README.md) | [简体中文](README_CN.md)
+[简体中文](README_CN.md) | [English](README.md)
 
-**Introduction:**
+**介绍：** 
 
-Based on Python third-party packages such as **matplotlib**, **cartopy**, **rasterio**, and **geopandas**, this project implements the plotting of scientific research maps for academic journals. 
+基于 **matplotlib**、**cartopy**、**rasterio**、**geopandas** 等 Python 第三方包，实现期刊科研地图绘制
 
-**Note:**
+**说明：**
 
-Most data used are simulated. Due to constraints on time costs and code complexity, the **reproduced results may not be identical to the originals**. 
+数据大多采用模拟数据，以及部分细节受限于时间成本和代码，**复现效果不能达到一模一样**。 
 
-**Source:**
+**来源：** 
 
-Most reproduced images are sourced from flagship journals in the field, with relevant sources attached. Some original authors **may have already provided implementation scripts**. 
+复现的图片大多来自于领域内旗舰期刊，会附上相关来源，有些图片原作者**可能已提供了实现脚本**。
