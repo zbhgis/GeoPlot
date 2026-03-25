@@ -30,7 +30,7 @@ ax = fig.add_subplot(1, 1, 1, projection=proj)
 # 设置范围
 ax.set_global()
 
-# 设置色带
+# 设置色带，这个配色专门为这个数据调整的，仅供参考
 # 定义海洋色系
 ocean_colors = [
     "#102A51",
@@ -170,7 +170,7 @@ for hs_alpha, base_alpha, suffix in param_groups:
     )
     cbar.set_label("Elevation (m)", fontsize=14)
 
-    # 添加纬度标签 (不要经度标签，不要网格线)
+    # 添加纬度标签，不要经度标签，不要网格线
     gl = ax.gridlines(
         draw_labels=True,
         linewidth=0,
