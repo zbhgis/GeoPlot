@@ -207,3 +207,7 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
+# other
+/data_test
+/fig_test
+/code_test
