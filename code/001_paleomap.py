@@ -9,7 +9,6 @@
 
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import cartopy.feature as cfeature
 import xarray as xr
 from pathlib import Path
 import os
@@ -107,36 +106,92 @@ terrain_map, norm = create_zero_based_colormap(vmin, vmax, ocean_colors, land_co
 script_name = os.path.splitext(os.path.basename(__file__))[0]
 folder_path = os.path.join("../fig_res", script_name)
 os.makedirs(folder_path, exist_ok=True)
-output_filename = f"{script_name}_{nc_name}.png"
-output_path = os.path.join(folder_path, output_filename)
 
-# 读取数据并绘制
+# 读取数据
 ds = xr.open_dataset(nc_file)
 data = ds["z"].values
 lats = ds["latitude"].values
 lons = ds["longitude"].values
 ds.close()
 
-im = ax.imshow(
-    data,
-    extent=[lons.min(), lons.max(), lats.min(), lats.max()],
-    transform=ccrs.PlateCarree(),
-    origin="upper",
-    cmap=terrain_map,
-    norm=norm,
-    interpolation="bilinear",
-)
+# 参数配置：(hillshade_alpha, base_alpha, suffix)
+param_groups = [
+    (0.20, 0.9, "soft"),
+    (0.35, 0.8, "extreme"),
+    (0, 0.8, "light"),
+    (0, 1, "normal"),
+]
 
-# 添加DEM色带
-cbar = fig.colorbar(
-    im, ax=ax, orientation="horizontal", pad=0.04, aspect=40, shrink=0.6, extend="both"
-)
-cbar.set_label("Elevation (m)", fontsize=14)
+from matplotlib.colors import LightSource
 
-# 添加现在的矢量边界
-ax.add_feature(cfeature.COASTLINE, linewidth=0.5, edgecolor="black")
-ax.set_title(nc_name, fontsize=16, pad=15)
+ls = LightSource()
 
-plt.savefig(output_path, dpi=100, bbox_inches="tight")
-plt.close(fig)
+# 生成不同参数的图
+for hs_alpha, base_alpha, suffix in param_groups:
+    fig = plt.figure(figsize=(10, 6), dpi=100)
+    ax = fig.add_subplot(1, 1, 1, projection=ccrs.Hammer())
+    ax.set_global()
+
+    # 绘制基础地形色带
+    im = ax.imshow(
+        data,
+        extent=[lons.min(), lons.max(), lats.min(), lats.max()],
+        transform=ccrs.PlateCarree(),
+        origin="upper",
+        cmap=terrain_map,
+        norm=norm,
+        interpolation="bilinear",
+        alpha=base_alpha,
+    )
+
+    # 生成山体阴影
+    hillshade = ls.hillshade(data, dx=1, dy=1)
+
+    # 叠加山体阴影层
+    ax.imshow(
+        hillshade,
+        extent=[lons.min(), lons.max(), lats.min(), lats.max()],
+        transform=ccrs.PlateCarree(),
+        origin="upper",
+        cmap="gray",
+        alpha=hs_alpha,
+        interpolation="bilinear",
+    )
+
+    # 添加色带
+    cbar = fig.colorbar(
+        im,
+        ax=ax,
+        orientation="horizontal",
+        pad=0.04,
+        aspect=40,
+        shrink=0.6,
+        extend="neither",
+    )
+    cbar.set_label("Elevation (m)", fontsize=14)
+
+    # 添加纬度标签 (不要经度标签，不要网格线)
+    gl = ax.gridlines(
+        draw_labels=True,
+        linewidth=0,
+        alpha=0,
+        xlocs=[],
+        ylocs=[-60, -30, 0, 30, 60],
+    )
+    gl.top_labels = False
+    gl.right_labels = False
+    gl.left_labels = True
+    gl.xlabel_style = {"size": 9, "color": "black"}
+    gl.ylabel_style = {"size": 9, "color": "black"}
+
+    # 添加标题
+    ax.set_title(f"{nc_name} - {suffix}", fontsize=14, pad=15)
+
+    # 保存
+    output_filename = f"{script_name}_{nc_name}_{suffix}.png"
+    output_path = os.path.join(folder_path, output_filename)
+    plt.savefig(output_path, dpi=150, bbox_inches="tight")
+    plt.close(fig)
+    print(output_filename)
+
 print("ok")
