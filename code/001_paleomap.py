@@ -15,6 +15,8 @@ import os
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.colors import Normalize
+from matplotlib.colors import LightSource
+from scipy.ndimage import gaussian_filter
 
 
 # 基本配置
@@ -122,9 +124,10 @@ param_groups = [
     (0, 1, "normal"),
 ]
 
-from matplotlib.colors import LightSource
 
-ls = LightSource()
+sigma = 1.5  # 模糊半径，增加结果的光滑度
+data = gaussian_filter(data, sigma=sigma)
+ls = LightSource(azdeg=315, altdeg=45)
 
 # 生成不同参数的图
 for hs_alpha, base_alpha, suffix in param_groups:
@@ -140,7 +143,7 @@ for hs_alpha, base_alpha, suffix in param_groups:
         origin="upper",
         cmap=terrain_map,
         norm=norm,
-        interpolation="bilinear",
+        interpolation="spline36",
         alpha=base_alpha,
     )
 
