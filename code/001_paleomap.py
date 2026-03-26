@@ -20,7 +20,7 @@ from matplotlib.colors import Normalize
 # 基本配置
 plt.rcParams["font.family"] = "Arial"
 nc_name = "paleo_6min_100Ma"
-nc_file = Path(f"../data_res/{nc_name}.nc")
+nc_file = Path(f"./data_res/{nc_name}.nc")
 
 # 图幅和投影
 proj = ccrs.Hammer()
@@ -104,7 +104,7 @@ terrain_map, norm = create_zero_based_colormap(vmin, vmax, ocean_colors, land_co
 
 # 提前设置好导出文件路径
 script_name = os.path.splitext(os.path.basename(__file__))[0]
-folder_path = os.path.join("../fig_res", script_name)
+folder_path = os.path.join("./fig_res", script_name)
 os.makedirs(folder_path, exist_ok=True)
 
 # 读取数据
@@ -170,19 +170,31 @@ for hs_alpha, base_alpha, suffix in param_groups:
     )
     cbar.set_label("Elevation (m)", fontsize=14)
 
-    # 添加纬度标签，不要经度标签，不要网格线
+    # 手动在左侧添加纬度标记，用默认的绘制容易出错
     gl = ax.gridlines(
-        draw_labels=True,
+        draw_labels=False,
         linewidth=0,
         alpha=0,
-        xlocs=[],
-        ylocs=[-60, -30, 0, 30, 60],
     )
-    gl.top_labels = False
-    gl.right_labels = False
-    gl.left_labels = True
-    gl.xlabel_style = {"size": 9, "color": "black"}
-    gl.ylabel_style = {"size": 9, "color": "black"}
+    lat_nums = [-60, -30, 0, 30, 60]
+    lat_labels = [
+        "60°S     ",
+        "30°S   ",
+        "0° ",
+        "30°N   ",
+        "60°N     ",
+    ]
+    for lat_num, lat_label in zip(lat_nums, lat_labels):
+        ax.text(
+            -180,  # 标签的经度坐标
+            lat_num,  # 标签纬度坐标
+            lat_label,  # 增大与边界的距离
+            transform=ccrs.PlateCarree(),
+            fontsize=9,
+            color="black",
+            ha="right",
+            va="center",
+        )
 
     # 添加标题
     ax.set_title(f"{nc_name} - {suffix}", fontsize=14, pad=15)
