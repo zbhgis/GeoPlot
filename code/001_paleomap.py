@@ -22,7 +22,7 @@ from scipy.ndimage import gaussian_filter
 # 基本配置
 plt.rcParams["font.family"] = "Arial"
 nc_name = "paleo_6min_100Ma"
-nc_file = Path(f"./data_res/{nc_name}.nc")
+nc_file = Path(f"../data_res/{nc_name}.nc")
 
 # 图幅和投影
 proj = ccrs.Hammer()
@@ -106,7 +106,7 @@ terrain_map, norm = create_zero_based_colormap(vmin, vmax, ocean_colors, land_co
 
 # 提前设置好导出文件路径
 script_name = os.path.splitext(os.path.basename(__file__))[0]
-folder_path = os.path.join("./fig_res", script_name)
+folder_path = os.path.join("../fig_res", script_name)
 os.makedirs(folder_path, exist_ok=True)
 
 # 读取数据
