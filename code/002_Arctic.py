@@ -91,9 +91,9 @@ for color_name in color_names:
         im,
         ax=ax,
         orientation="horizontal",
-        pad=0.06,  # 调整色带与主图距离
-        aspect=25,  # 调整色带粗细
-        shrink=0.7,  # 调整色带长度
+        pad=0.06,  # 色带与主图距离
+        aspect=25,  # 色带粗细
+        shrink=0.7,  # 色带长度
     )
 
     # 将边框线调整为无色
