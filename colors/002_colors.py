@@ -1,3 +1,4 @@
+# 通过python文件存储，方便手动调整颜色
 color_maps = {
     "color1": [
         "#234c23",
