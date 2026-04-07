@@ -2,8 +2,9 @@
 -------------------------------------------------------------------------------
 @Author         :  zbhgis
 @Github         :  https://github.com/zbhgis
-@Description    :  Arctic-square
+@Original figure:  https://doi.org/10.1038/s41586-024-07274-7
 @Data           :  https://download.gebco.net/
+@Description    :  Arctic-square
 -------------------------------------------------------------------------------
 """
 

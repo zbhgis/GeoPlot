@@ -2,8 +2,10 @@
 -------------------------------------------------------------------------------
 @Author         :  zbhgis
 @Github         :  https://github.com/zbhgis
-@Description    :  paleogeography map (Hammer Projection)
+@Original figure:  https://doi.org/10.1038/s41467-025-63604-x
+                   https://doi.org/10.1038/s41467-025-66316-4
 @Data           :  https://zenodo.org/records/5460860
+@Description    :  paleogeography map (Hammer Projection)
 -------------------------------------------------------------------------------
 """
 
